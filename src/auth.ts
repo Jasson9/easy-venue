@@ -30,41 +30,7 @@ import { env } from "$env/dynamic/private"
 export const { handle, signIn, signOut } = SvelteKitAuth({
   trustHost: true,
   providers: [
-    Apple,
-    Auth0,
-    AzureB2C({
-      clientId: env.AUTH_AZURE_AD_B2C_ID,
-      clientSecret: env.AUTH_AZURE_AD_B2C_SECRET,
-      issuer: env.AUTH_AZURE_AD_B2C_ISSUER,
-    }),
-    BoxyHQSAML({
-      clientId: "dummy",
-      clientSecret: "dummy",
-      issuer: env.AUTH_BOXYHQ_SAML_ISSUER,
-    }),
-    Cognito,
-    Coinbase,
-    Discord,
-    Dropbox,
-    Facebook,
     GitHub,
-    GitLab,
-    Google,
-    Hubspot,
-    Keycloak,
-    LinkedIn,
-    Netlify,
-    Okta,
-    Passage,
-    Pinterest,
-    Reddit,
-    Slack,
-    Spotify,
-    Twitch,
-    Twitter,
-    WorkOS({
-      connection: env.AUTH_WORKOS_CONNECTION!,
-    }),
-    Zoom,
+    Google
   ],
 })
