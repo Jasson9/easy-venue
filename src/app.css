@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.click{
+    cursor: pointer;
+}
+
+.click-style{
+    transition: filter 0.3s, backdrop-filter 0.3s;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.link-underline{
+    text-decoration: underline;
+}
+
+.click-style:active{
+    backdrop-filter: contrast(0.8);
+    filter: contrast(0.8);
+    /* background: linear-gradient(rgb(0 0 0/40%) 0 0);; */
+}
+
+:root{
+    --Secondary-Orange: #FF6B00;
+}
+
+:root {
+    /* Colors */
+    /* Fonts */
+    --highlights-font-family: Roboto-ExtraBold, sans-serif;
+    --highlights-font-size: 40px;
+    --highlights-line-height: normal;
+    --highlights-font-weight: 800;
+    --highlights-font-style: normal;
+    --heading-font-family: OpenSans-Bold, sans-serif;
+    --heading-font-size: 25px;
+    --heading-line-height: normal;
+    --heading-font-weight: 700;
+    --heading-font-style: normal;
+    --subheading-font-family: OpenSans-SemiBold, sans-serif;
+    --subheading-font-size: 20px;
+    --subheading-line-height: normal;
+    --subheading-font-weight: 600;
+    --subheading-font-style: normal;
+    --text-font-family: OpenSans-Regular, sans-serif;
+    --text-font-size: 16px;
+    --text-line-height: normal;
+    --text-font-weight: 400;
+    --text-font-style: normal;
+  
+    /* Effects */
+  }
+  

@@ -1,0 +1,140 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+ 
+generator client {
+  provider = "prisma-client-js"
+}
+ 
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  // Optional for WebAuthn support
+  Authenticator Authenticator[]
+  userReview Review[] @relation()
+  userWishlist Wishlist[] @relation()
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+ 
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([provider, providerAccountId])
+}
+ 
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+ 
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@id([identifier, token])
+}
+ 
+// Optional for WebAuthn support
+model Authenticator {
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([userId, credentialID])
+}
+
+model venueImage {
+  imageId        String   @id @default(cuid())
+  venueId        String
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  venueImages Venue @relation(fields: [venueId], references: [venueId], onDelete: Cascade)
+  
+}
+
+model Venue{
+  venueId        String   @id @default(cuid())
+  name      String
+  address   String
+  state     String
+  country   String
+  zip       String
+  phone     String
+  email     String
+  website   String
+  price BigInt
+  description String
+  capacity Int
+  rating Float
+  latitude Float
+  longitude Float
+  amenities String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  image String
+
+  venueReviews Review[] @relation()
+  venueImages venueImage[] @relation()
+}
+
+model Review {
+  reviewId        String   @id @default(cuid())
+  userId    String
+  venueId   String
+  productId String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  venueReviews Venue @relation(fields: [venueId], references: [venueId], onDelete: Cascade)
+  userReview User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Wishlist{
+  wishlistId String @id @default(cuid())
+  userId     String
+  venueId    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  venueWishlist User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

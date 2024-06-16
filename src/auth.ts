@@ -26,11 +26,62 @@ import Twitter from "@auth/sveltekit/providers/twitter"
 import WorkOS from "@auth/sveltekit/providers/workos"
 import Zoom from "@auth/sveltekit/providers/zoom"
 import { env } from "$env/dynamic/private"
+import type {JWT} from "@auth/core/jwt"
+import type {User, Account, Profile,Session,DefaultSession} from "@auth/core/types"
+import type {AdapterUser,AdapterSession} from "@auth/core/adapters"
+import type { Awaitable } from "@auth/core/types";
+import type { CredentialInput } from "@auth/sveltekit/providers"
+
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import { PrismaClient } from "@prisma/client"
+ 
+const prisma = new PrismaClient()
+
+
+async function jwtCallback(params: {
+  token: JWT;
+  user: User |AdapterUser;
+  account: Account | null;
+  profile?: Profile | undefined;
+  isNewUser?: boolean | undefined;
+  session?: any;
+}): Promise<JWT> {
+  console.log(params)
+  return params.token;
+}
+
+async function signInCallback(params: {
+  user: User|AdapterUser ;
+  account: Account | null;
+  profile?: Profile;
+  email?:{
+    verificationRequest?: boolean ;
+  };
+  credentials?:Record<string,CredentialInput>
+}): Promise<boolean> {
+  // console.log(params)
+  return true;
+}
+
+async function sessionCallback(params: ({
+  session: {
+      user: AdapterUser;
+  } & AdapterSession;
+  user: AdapterUser;
+} & {
+  session: Session;
+  token: JWT;
+}) & {
+  newSession: any;
+  trigger?: "update";
+}) : Promise<Session | DefaultSession>{
+  // console.log(params.session)
+  return params.session;
+}
 
 export const { handle, signIn, signOut } = SvelteKitAuth({
   trustHost: true,
-  providers: [
-    GitHub,
-    Google
-  ],
-})
+  providers: [GitHub, Google],
+  callbacks: { jwt: jwtCallback , signIn: signInCallback ,session: sessionCallback },
+  adapter: PrismaAdapter(prisma),
+});

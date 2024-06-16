@@ -1,112 +1,200 @@
-<script lang="ts">
-  import { page } from "$app/stores"
-  import { SignIn, SignOut } from "@auth/sveltekit/components"
+<script>
+    import { page } from "$app/stores"
+    import SignInButton from "$lib/SignInButton.svelte"
+    import { SignIn } from "@auth/sveltekit/components"
+    import logo from '../img/logo.webp';
+    import Icon from '@iconify/svelte';
 </script>
-
 <header>
-  <div class="signedInStatus">
-    <div class="nojs-show loaded">
-      <img
-        alt="User avatar"
-        src={$page.data?.session?.user?.image ??
-          "https://source.boringavatars.com/marble/120"}
-        class="avatar"
-      />
-      {#if $page.data.session}
-        <span class="signedInText">
-          {$page.data.session.user?.email ?? $page.data.session.user?.name}
-        </span>
-        <SignOut>
-          <div slot="submitButton" class="buttonPrimary">Sign out</div>
-        </SignOut>
-      {:else}
-        <span class="notSignedInText">You are not signed in</span>
-        <SignIn>
-          <div slot="submitButton" class="buttonPrimary">Sign in</div>
-        </SignIn>
-      {/if}
+    <div class="left-header header-part">
+        <div class="hamburger-btn click">
+            <img src="https://img.icons8.com/ios/50/000000/menu--v1.png" alt="menu"/>
+        </div>
+        <a href="./" class="flex place-items-center left-header-default">
+            <img src={logo} class="header-logo">
+            <h1 class="header-title text-2xl">Easy Venue</h1>
+        </a>
     </div>
-  </div>
-  <nav>
-    <ul class="navItems">
-      <li class="navItem"><a href="/">Home</a></li>
-      <li class="navItem"><a href="/protected">Protected</a></li>
-    </ul>
-  </nav>
+    
+    <div class="right-header header-part justify-end">
+        <a class="navigation" href="/">Home</a>
+        <a class="navigation" href="/wishlist">Wishlist</a>
+        <a class="navigation" href="/contact-us">Contact Us</a>
+        <div class="search-container">
+            <input type="text" placeholder="Search" class="search-input"/>
+            <div class="search-btn click click-style">
+                <Icon icon="material-symbols:search" width=24px color={'black'}/>
+                <!-- <img src="https://img.icons8.com/ios/50/000000/search--v1.png" alt="search"/>     -->
+                </div>
+        </div>
+        {#if $page.data.session}
+        <div class="notification-btn click">
+            <Icon width=30px icon="mingcute:notification-line" />
+            <!-- <img src="https://img.icons8.com/ios/50/000000/appointment-reminders--v1.png"/> -->
+        </div>
+
+        <div class="profile-pic-container click click-style">
+            <a href="/profile">            <img
+                alt="User avatar"
+                src={$page.data?.session?.user?.image ??
+                  "https://source.boringavatars.com/marble/120"}
+                class="avatar"
+              /></a>
+        </div>
+      {:else}
+        <SignIn class="rounded-border-btn"></SignIn>
+      {/if}
+
+    </div>
+
 </header>
 
-<style>
-  .nojs-show {
-    opacity: 1;
-    top: 0;
-  }
-  .signedInStatus {
-    display: block;
-    min-height: 4rem;
-  }
-  .loaded {
-    position: relative;
-    top: 0;
-    opacity: 1;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    border-radius: 0 0 0.6rem 0.6rem;
-    padding: 0.6rem 1rem;
-    margin: 0;
-    background-color: rgba(0, 0, 0, 0.05);
-    transition: all 0.2s ease-in;
-  }
-  .signedInText,
-  .notSignedInText {
-    justify-content: end;
-    padding-left: 1rem;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: inherit;
-    line-height: 1.3rem;
-    flex: 1;
-  }
-  .signedInText {
-    padding-top: 0rem;
-    left: 4.6rem;
-  }
-  .avatar {
-    border-radius: 2rem;
-    float: left;
-    height: 2.8rem;
-    width: 2.8rem;
-    background-color: white;
-    background-size: cover;
-    background-repeat: no-repeat;
-  }
-  .buttonPrimary {
-    font-weight: 500;
-    border-radius: 0.3rem;
-    cursor: pointer;
-    font-size: 1rem;
-    line-height: 1.4rem;
-    position: relative;
-    justify-self: end;
-    background-color: #346df1;
-    color: #fff;
-    text-decoration: none;
-    padding: 0.7rem 1.4rem;
-  }
-  .buttonPrimary:hover {
-    box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.2);
-  }
-  .navItems {
-    margin-bottom: 2rem;
-    padding: 0;
-    list-style: none;
-  }
-  .navItem {
-    display: inline-block;
-    margin-right: 1rem;
-  }
-  :global(form button) {
-    border: none !important;
-  }
+
+<style lang="postcss">
+    @import '../styles/global.css';
+
+    .right-header *{
+        color: white;
+        font-weight: 400;
+        white-space: nowrap;
+    }
+
+    .profile-pic-container img{
+        width: 30px;
+        border-radius: 50%;
+    }
+
+    .right-header img{
+        width: 32px;
+    }
+
+    .header-logo{
+        width: 48px;
+        height: 48px;
+    }
+
+    .profile-pic-container{
+        display: flex;
+        border: 2px solid black;
+        border-radius: 50%;
+        background-color: white;
+    }
+
+    .header-part{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .right-header{
+        display: flex;
+        gap: 30px;
+    }
+
+    .header-title {
+        color: white;
+    }
+
+    .notification-btn{
+        display: flex;
+        align-items: center;
+    }
+
+    .search-container .search-btn img{
+        width: 26px;
+    }
+
+    .search-container .search-btn{
+        display: flex;
+        /* border-left: 1px solid black; */
+        height: inherit;
+        align-items: center;
+        padding: 0px 12px;
+        /* background-color: rgb(221, 221, 221); */
+        border-radius: 0px 5px 5px  0px;
+    }
+
+    .search-container{
+        /* min-width: 160px; */
+        /* width: 30vw; */
+        width: 40%;
+        max-width: 400px;
+        display: flex;
+        gap: 5px;
+        background-color: white;
+        border-radius: 5px;
+        padding-left: 12px;
+        height: 32px;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .search-container input, .search-container input::placeholder{
+        background-color: transparent;
+        border: none;
+        width: 20vw;
+        color: var(--Secondary-Orange);
+    }
+
+    .search-container input:focus-visible{
+        outline: none;
+    }
+    
+    header{
+        /* width: 100vw; */
+        background-color: var(--Secondary-Orange);
+        padding: 5px;
+        text-align: center;
+        top: 0px;
+        left: 0px;
+        position: sticky;
+        /* margin-bottom: 10px; */
+        display: flex;
+        flex-wrap: nowrap;
+        gap : 20px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0px 12px;
+        height: 56px;
+        z-index: 1000;
+    }
+
+    .hamburger-btn img{
+        width: 30px;
+        display: none;
+    }
+
+    .middle-header{
+        flex-grow: 0.8;
+        justify-content: center;
+    }
+
+    @media (max-width: 768px){
+        .left-header-default{
+            display: none;
+        }
+        .hamburger-btn img{
+            display: block;
+        }
+
+        .right-header{
+            gap: 10px;
+        }
+
+        .search-container .search-btn{
+            padding: 0px 5px;
+        }
+
+        .left-header{
+            gap: 0px;
+        }
+
+        .notification-btn{
+            display: none;
+        }
+    }
+
+    @media (max-width: 425px){
+
+    }   
 </style>
