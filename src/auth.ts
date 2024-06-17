@@ -38,50 +38,21 @@ import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 
 
-async function jwtCallback(params: {
-  token: JWT;
-  user: User |AdapterUser;
-  account: Account | null;
-  profile?: Profile | undefined;
-  isNewUser?: boolean | undefined;
-  session?: any;
-}): Promise<JWT> {
-  console.log(params)
-  return params.token;
+async function session({ session, token }: { session: any, token: JWT }) {
+  // console.log(session)
+  session.accessToken = token?.accessToken
+  return session
 }
 
-async function signInCallback(params: {
-  user: User|AdapterUser ;
-  account: Account | null;
-  profile?: Profile;
-  email?:{
-    verificationRequest?: boolean ;
-  };
-  credentials?:Record<string,CredentialInput>
-}): Promise<boolean> {
-  // console.log(params)
-  return true;
-}
-
-async function sessionCallback(params: ({
-  session: {
-      user: AdapterUser;
-  } & AdapterSession;
-  user: AdapterUser;
-} & {
-  session: Session;
-  token: JWT;
-}) & {
-  newSession: any;
-  trigger?: "update";
-}) : Promise<Session | DefaultSession>{
-  // console.log(params.session)
-  return params.session;
+async function jwtCallback({ token, user, account, profile, trigger, isNewUser, session }: { token: JWT, user: User | AdapterUser, account: Account | null, profile?: Profile, trigger?: "signIn" | "update" | "signUp", isNewUser?: boolean, session?: any }): Promise<JWT | null> {
+  // console.log(account);
+  token.accessToken = account?.access_token;
+  return token
 }
 
 export const { handle, signIn, signOut } = SvelteKitAuth({
   trustHost: true,
   providers: [GitHub, Google],
-  callbacks: { jwt: jwtCallback , signIn: signInCallback ,session: sessionCallback },
+  callbacks: { jwt: jwtCallback, session: session},
   adapter: PrismaAdapter(prisma),
 });

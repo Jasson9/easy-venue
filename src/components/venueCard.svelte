@@ -15,31 +15,26 @@
     export let wishlistId:string|undefined = undefined;
     export let data: any;
 
-    
-
     async function wishlistVenue() {
-        console.log(data.session.user);
         if(data?.session){
             console.log(data.wishlist)
             if(!wishlistId){
-                console.log(true)
                 wishlistId = await fetch("/api/wishlist/add", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        "Authorization": "Bearer "+data.session.sessionToken,
                     },
                     body: JSON.stringify({
                         venueId: venueId,
-                        userId: data.session.user.id
                     }),
                 }).then(res => res.json()).then((data:Wishlist)=>data.wishlistId);
-                console.log(wishlistId)
               }else{
-                console.log(false)
                 await fetch("/api/wishlist/remove", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        "Authorization": "Bearer "+data.session.sessionToken,
                     },
                     body: JSON.stringify({
                         wishlistId: wishlistId

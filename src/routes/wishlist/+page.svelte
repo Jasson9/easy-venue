@@ -8,7 +8,7 @@
     <div class="container md mx-auto py-4">
         <h1 class="text-3xl font-bold text-center">Wishlist</h1>
         <div class="flex flex-wrap gap-16 place-content-center">
-        {#each data.venues as venue}
+        {#each data.wishlistVenues as venue}
         <VenueCard
             venueName={venue.name}
             venueLocation={venue.state}
