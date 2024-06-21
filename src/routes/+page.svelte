@@ -45,7 +45,7 @@
                 price={"Rp "+String(venue.price)}
                 capacity={String(venue.capacity)+" people"}
                 venueRating={String(venue.rating)}
-                imageSrc={venue.image}
+                imageSrc={venue.image||""}
                 data={data}
                 wishlistId={data.wishlist.find(wish => wish.venueId == venue.venueId)?.wishlistId}
                 venueId={venue.venueId}
@@ -53,6 +53,8 @@
         {/each}
         </div>
     </div>
+
+    <a href="/recommendation">Recommendation Page</a>
     
 <!-- 
     <div class="container md mx-auto py-4">

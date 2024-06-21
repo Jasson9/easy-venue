@@ -1,9 +1,19 @@
-<script>
+<script lang="ts">
     import { page } from "$app/stores"
+    import {redirect} from "@sveltejs/kit"
     import SignInButton from "$lib/SignInButton.svelte"
     import { SignIn } from "@auth/sveltekit/components"
     import logo from '../img/logo.webp';
     import Icon from '@iconify/svelte';
+    import {goto} from '$app/navigation';
+    let searchKeyword = "";
+
+    async function handleSearchBar(){
+        if(searchKeyword){
+            document.location.href = `/search?keyword=${searchKeyword}`;
+            // await goto(`/search?keyword=${searchKeyword}`, { replaceState: true })
+        }
+    }
 </script>
 <header>
     <div class="left-header header-part">
@@ -20,13 +30,13 @@
         <a class="navigation" href="/">Home</a>
         <a class="navigation" href="/wishlist">Wishlist</a>
         <a class="navigation" href="/contact-us">Contact Us</a>
-        <div class="search-container">
-            <input type="text" placeholder="Search" class="search-input"/>
-            <div class="search-btn click click-style">
+        <form class="search-container"  on:submit={handleSearchBar} method="get">
+            <input type="text" placeholder="Search" class="search-input" on:change={(e)=>searchKeyword = e.currentTarget.value}/>
+            <button type="submit" value="submit" class="search-btn click click-style">
                 <Icon icon="material-symbols:search" width=24px color={'black'}/>
                 <!-- <img src="https://img.icons8.com/ios/50/000000/search--v1.png" alt="search"/>     -->
-                </div>
-        </div>
+                </button>
+            </form>
         {#if $page.data.session}
         <div class="notification-btn click">
             <Icon width=30px icon="mingcute:notification-line" />

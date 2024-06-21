@@ -36,6 +36,7 @@
     "@prisma/client": "^5.15.0",
     "boxicons": "^2.1.4",
     "cuid": "^3.0.0",
+    "dotenv": "^16.4.5",
     "flowbite": "^2.3.0",
     "flowbite-svelte": "^0.46.1",
     "tailwind-merge": "^2.3.0"

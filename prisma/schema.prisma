@@ -99,17 +99,18 @@ model Venue{
   zip       String
   phone     String
   email     String
-  website   String
-  price BigInt
-  description String
+  website   String?
+  category  String @default("General")
+  price Int
+  description String?
   capacity Int
-  rating Float
-  latitude Float
-  longitude Float
+  rating Float?
+  latitude Float?
+  longitude Float?
   amenities String[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  image String
+  image String?
 
   venueReviews Review[] @relation()
   venueImages venueImage[] @relation()

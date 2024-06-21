@@ -5,11 +5,22 @@ export const getVenues = async () => {
     return await client.venue.findMany();
 }
 
-export const searchVenue = async (name: string) => {
+export const searchVenueByKeyword = async (name: string) => {
     return await client.venue.findMany({
         where: {
             name: {
-                contains: name
+                contains: name,
+                mode: "insensitive"
+            }
+        }
+    });
+}
+
+export const getVenuesFromIds = async (ids: string[]) => {
+    return await client.venue.findMany({
+        where: {
+            venueId: {
+                in: ids
             }
         }
     });

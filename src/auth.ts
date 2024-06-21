@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { SvelteKitAuth } from "@auth/sveltekit"
 import Apple from "@auth/sveltekit/providers/apple"
 import Auth0 from "@auth/sveltekit/providers/auth0"
