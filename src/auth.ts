@@ -53,7 +53,8 @@ async function jwtCallback({ token, user, account, profile, trigger, isNewUser, 
 
 export const { handle, signIn, signOut } = SvelteKitAuth({
   trustHost: true,
-  providers: [GitHub, Google],
+  providers: [
+    Google],
   callbacks: { jwt: jwtCallback, session: session},
   adapter: PrismaAdapter(prisma),
 });

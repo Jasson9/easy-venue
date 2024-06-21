@@ -1,39 +1,39 @@
-> The example repository is maintained from a [monorepo](https://github.com/nextauthjs/next-auth/tree/main/apps/examples/sveltekit). Pull Requests should be opened against [`nextauthjs/next-auth`](https://github.com/nextauthjs/next-auth).
+# Easy Venue
+Ease your way to find and book venues
 
-<p align="center">
-   <br/>
-   <a href="https://authjs.dev" target="_blank">
-   <img height="64" src="https://authjs.dev/img/logo-sm.png" />
-   </a>
-   <a href="https://kit.svelte.dev" target="_blank">
-   <img height="64" src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Svelte_Logo.svg" />
-   </a>
-   <h3 align="center"><b>SvelteKit Auth</b> - Example App</h3>
-   <p align="center">
-   Open Source. Full Stack. Own Your Data.
-   </p>
-   <p align="center" style="align: center;">
-      <a href="https://npm.im/@auth/sveltekit">
-        <img alt="npm" src="https://img.shields.io/npm/v/@auth/sveltekit?color=green&label=@auth/sveltekit&style=flat-square">
-      </a>
-      <a href="https://bundlephobia.com/result?p=@auth/sveltekit">
-        <img src="https://img.shields.io/bundlephobia/minzip/@auth/sveltekit?label=size&style=flat-square" alt="Bundle Size"/>
-      </a>
-      <a href="https://www.npmtrends.com/@auth/sveltekit">
-        <img src="https://img.shields.io/npm/dm/@auth/sveltekit?label=downloads&style=flat-square" alt="Downloads" />
-      </a>
-      <a href="https://npm.im/@auth/sveltekit">
-        <img src="https://img.shields.io/badge/TypeScript-blue?style=flat-square" alt="TypeScript" />
-      </a>
-   </p>
-</p>
+## Introduction
+Easy Venue is a webapp to find and book venues, project was conducted for Software Engineering project at Bina Nusantara University.
 
-## Overview
+Group Members:
+* Hany Wijaya - 2602089742
+* Jasson Widiarta - 2602057646
+* Bryan Mulia - 2602054764
 
-This is the official SvelteKit Auth example for [Auth.js](https://sveltekit.authjs.dev).
+## Frameworks, Cloud Provider, Libraries, etc
+- Sveltekit (frontend and backend)
+- Auth.js (for authentication using third party providers)
+- Postgres (database)
+- Prisma (ORM)
+- TailwindCSS (styling)
+- Flowbite (html components)
+- Iconify (icons)
+- Vercel (Web deployment, database host and CI/CD)
+- Modal (AI model & inference Deployment)
 
-## Getting started
+## Features
+- [X] Login and Register
+- [X] Venue Search
+- [X] Wishlist
+- [X] AI Recommendation system
+- [ ] Book venues
+- [ ] Payment
+- [ ] Chat
+- [ ] 360 view of venue
+- [ ] Review and rating
 
-You can instantly deploy this example to [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=sveltekit-auth-example) by clicking the following button.
+## Notes
+Project was create from Auth.js sveltekit template and modified to fit requirements.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/nextauthjs/sveltekit-auth-example&project-name=sveltekit-auth-example&repository-name=sveltekit-auth-example)
+Correlated Repo:
+- [easy-venue-ai](https://github.com/Jasson9/easy-venue-ai)
+- [sveltekit-auth-example](https://github.com/nextauthjs/sveltekit-auth-example)
