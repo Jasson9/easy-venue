@@ -1,5 +1,6 @@
 <script lang="ts">
     export let data;
+    import Button from "$components/button.svelte"
     import VenueCard from "$components/venueCard.svelte";
     import type { Venue } from "@prisma/client"
     let venues:Venue[] = [];
@@ -25,10 +26,11 @@
 
 <main>
     <div class="container md mx-auto py-4">
-        <form on:submit={getRecommendation}>
+        <form class="flex flex-col gap-4 items-center" on:submit={getRecommendation}>
             <label for="recommendationCriteria">Recommendation Criteria</label>
-            <input bind:value={recommendationCriteria} type="text" id="recommendationCriteria" class="rounded-lg border border-gray-300 p-2 w-full"/>
-            <button type="submit" class="rounded-lg bg-blue-500 text-white p-2 w-full mt-2">Get Recommendation</button>
+            <input placeholder="Hotel" bind:value={recommendationCriteria} type="text" id="recommendationCriteria" class="rounded-lg border border-gray-300 p-2 w-4/6"/>
+            <!-- <button type="submit" class="rounded-lg bg-blue-500 text-white p-2 w-full mt-2"></button> -->
+            <Button class="orange" type="submit">Get Recommendation</Button>
         </form>
         {#if loading}
             <p>Loading...</p>

@@ -8,7 +8,7 @@ import { getUserWishlist, getVenuesFromWishlistIds } from '$lib/wishlist';
 export const load: PageServerLoad = async (event) => {
     var session = await event.locals.auth();
     if (!session){
-        throw redirect(307,'/');
+        throw redirect(307,'/login');
     }
 
     let wishlistVenues:Venue[] = [];

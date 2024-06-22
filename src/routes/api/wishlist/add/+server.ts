@@ -21,7 +21,6 @@ export async function POST({request,cookies}){
         if(userId == null){
             return json({error: "Invalid token"},{status: 401})
         }
-        console.log(data);
         let wishlistId = (await addVenueToWishlist(userId ,data.venueId)).wishlistId
         return json({wishlistId: wishlistId})
     } catch (error) {

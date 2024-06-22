@@ -1,60 +1,75 @@
-import 'dotenv/config'
 import { SvelteKitAuth } from "@auth/sveltekit"
-import Apple from "@auth/sveltekit/providers/apple"
-import Auth0 from "@auth/sveltekit/providers/auth0"
-import AzureB2C from "@auth/sveltekit/providers/azure-ad-b2c"
-import BoxyHQSAML from "@auth/sveltekit/providers/boxyhq-saml"
-import Cognito from "@auth/sveltekit/providers/cognito"
-import Coinbase from "@auth/sveltekit/providers/coinbase"
-import Discord from "@auth/sveltekit/providers/discord"
-import Dropbox from "@auth/sveltekit/providers/dropbox"
-import Facebook from "@auth/sveltekit/providers/facebook"
-import GitHub from "@auth/sveltekit/providers/github"
-import GitLab from "@auth/sveltekit/providers/gitlab"
 import Google from "@auth/sveltekit/providers/google"
-import Hubspot from "@auth/sveltekit/providers/hubspot"
-import Keycloak from "@auth/sveltekit/providers/keycloak"
-import LinkedIn from "@auth/sveltekit/providers/linkedin"
-import Netlify from "@auth/sveltekit/providers/netlify"
-import Okta from "@auth/sveltekit/providers/okta"
-import Passage from "@auth/sveltekit/providers/passage"
-import Pinterest from "@auth/sveltekit/providers/pinterest"
-import Reddit from "@auth/sveltekit/providers/reddit"
-import Slack from "@auth/sveltekit/providers/slack"
-import Spotify from "@auth/sveltekit/providers/spotify"
-import Twitch from "@auth/sveltekit/providers/twitch"
-import Twitter from "@auth/sveltekit/providers/twitter"
-import WorkOS from "@auth/sveltekit/providers/workos"
-import Zoom from "@auth/sveltekit/providers/zoom"
 import { env } from "$env/dynamic/private"
 import type {JWT} from "@auth/core/jwt"
 import type {User, Account, Profile,Session,DefaultSession} from "@auth/core/types"
 import type {AdapterUser,AdapterSession} from "@auth/core/adapters"
-import type { Awaitable } from "@auth/core/types";
-import type { CredentialInput } from "@auth/sveltekit/providers"
-
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { PrismaClient } from "@prisma/client"
- 
-const prisma = new PrismaClient()
+import Credentials from '@auth/sveltekit/providers/credentials'
+import { comparePassword, saltAndHashPassword } from "./utils/password";
+import { getEmailCredentialsFromEmail, getUserFromId } from "$lib/account"
+import { randomUUID } from "crypto"
+import {client} from './lib/client'
+import { createSession } from "$lib/session"
 
+export const providers = [
+  Google(
+    {
+      clientId: env.AUTH_GOOGLE_ID,
+      clientSecret: env.AUTH_GOOGLE_SECRET,
+    }
+  
+  )]
 
-async function session({ session, token }: { session: any, token: JWT }) {
-  // console.log(session)
-  session.accessToken = token?.accessToken
-  return session
-}
-
-async function jwtCallback({ token, user, account, profile, trigger, isNewUser, session }: { token: JWT, user: User | AdapterUser, account: Account | null, profile?: Profile, trigger?: "signIn" | "update" | "signUp", isNewUser?: boolean, session?: any }): Promise<JWT | null> {
-  // console.log(account);
-  token.accessToken = account?.access_token;
+function createJWTToken(user: User | AdapterUser, accessToken:string): JWT {
+  let token: JWT = {
+    email:user.email,
+    exp: (new Date(Date.now() + 1000*60*60*24*30)).getTime()/1000,
+    iat: (new Date()).getTime()/1000,
+    jti: accessToken,
+    name: user.name,
+    picture: user.image,
+    sub: user.id,
+  }
   return token
 }
 
-export const { handle, signIn, signOut } = SvelteKitAuth({
+async function jwtCallback({ token, user, account, profile, trigger, isNewUser, session }: { token: JWT, user: User | AdapterUser | any, account: Account | null, profile?: Profile, trigger?: "signIn" | "update" | "signUp", isNewUser?: boolean, session?: Session }): Promise<JWT | null> {
+  if (account && token.accessToken == null) {
+    if(account.access_token == null && user.accessToken != null){
+      token.accessToken = user.accessToken
+    }
+    else token.accessToken= account.access_token
+    
+  }
+  if(profile)token.id = profile.id
+  if(session){
+    session.user = user
+  }
+  return token
+}
+
+async function loginCallback({ user, account, profile, trigger, credentials, session }: { user: User | AdapterUser, account: Account | null, profile?: Profile, trigger?: "signIn" | "update" | "signUp", credentials?: any, session?: any }): Promise<boolean> {
+  return true;
+  // return { user: user, account: account, profile: profile, trigger: trigger, isNewUser: isNewUser, session: session };
+}
+
+async function session({ session, token }: { session: any, token: JWT }) {
+  session.accessToken = token?.accessToken || token?.jti;
+  return session;
+}
+
+export const { signIn, signOut, handle } = SvelteKitAuth({
   trustHost: true,
-  providers: [
-    Google],
-  callbacks: { jwt: jwtCallback, session: session},
-  adapter: PrismaAdapter(prisma),
+  providers: providers,
+  callbacks: { jwt: jwtCallback, session: session, signIn: loginCallback},
+  adapter: PrismaAdapter(client),
+  pages: {
+    signIn: "/login",
+    error: "/login",
+  },session:{
+    strategy: "database",
+  }
+  
 });

@@ -17,7 +17,7 @@
 
     async function wishlistVenue() {
         if(data?.session){
-            console.log(data.wishlist)
+            // console.log(data.session)
             if(!wishlistId){
                 wishlistId = await fetch("/api/wishlist/add", {
                     method: "POST",
@@ -42,6 +42,8 @@
                 });
                 wishlistId = undefined;
             }
+        }else{
+            alert("You need to login first")
         }
     }
 

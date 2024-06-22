@@ -22,9 +22,9 @@ export async function POST({request,cookies}){
         let criteria = data.criteria;
 
         let recommendation = await getRecommendationFromAI(criteria);
-        console.log(recommendation)
+        // console.log(recommendation)
         let venues = await getVenuesFromIds(recommendation);
-        console.log(venues)
+        // console.log(venues)
         return json({venues: venues})
     } catch (error) {
         return json({error: "Server Error"},{status: 500})

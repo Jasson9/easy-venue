@@ -6,6 +6,7 @@
     import logo from '../img/logo.webp';
     import Icon from '@iconify/svelte';
     import {goto} from '$app/navigation';
+    import Button from "./button.svelte"
     let searchKeyword = "";
 
     async function handleSearchBar(){
@@ -52,7 +53,12 @@
               /></a>
         </div>
       {:else}
-        <SignIn class="rounded-border-btn"></SignIn>
+        <a href="/login">
+            <Button class="secondary">
+                Login
+            </Button>
+        </a>
+        
       {/if}
 
     </div>
