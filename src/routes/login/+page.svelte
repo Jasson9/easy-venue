@@ -17,7 +17,8 @@
         })
         if(res.ok){
             res.json().then((data)=>{
-                document.cookie = `authjs.session-token=${data.sessionToken}; path=/; max-age=86400; samesite=strict; secure`;
+                console.log("data ",data)
+                document.cookie = `authjs.session-token=${data.sessionToken};`;
                 window.location.href = "/";
             })
         }else{
