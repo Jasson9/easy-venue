@@ -37,8 +37,10 @@
             images
         } duration={3000} imgClass="home-carousel"/>
         </div>
-        <div class="home-carousel-title flex flex-col gap-2">
-          <h1>Easy <h1 class="orange">Venue</h1></h1>
+        <div class="home-carousel-title items-end flex flex-col gap-2">
+          <div class="flex flex-row">
+            <h1>Easy</h1><h1 class="orange"> Venue</h1>
+          </div>
           <h2 class="text-white text-3xl">Ease your way for finding venues</h2>
           <div class="flex flex-row gap-8 mt-4 justify-end">
             <a href="/login">
@@ -110,7 +112,7 @@
     font-weight: bold;
   }
 
-  .home-carousel-title h1 .orange{
+  h1.orange{
     color: var(--Secondary-Orange)
   }
     .carousel-overlay{
